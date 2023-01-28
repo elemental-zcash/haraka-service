@@ -1,0 +1,21 @@
+version: '3'
+services:
+  haraka:
+    build: .
+    ports:
+      - "25:25"
+      - "587:587"
+#      - "80:80"
+    volumes:
+      - ./haraka:/haraka
+      - ../acme-service/certs/${MAIL_HOSTNAME}:/etc/letsencrypt/live/${MAIL_HOSTNAME}:ro
+#   - ./letsencrypt:/etc/letsencrypt
+    environment:
+      - VIRTUAL_HOST=${MAIL_HOSTNAME}
+      - LETSENCRYPT_HOST=${MAIL_HOSTNAME}
+    networks:
+      - elemental_net
+networks:
+  elemental_net:
+    external: true
+
